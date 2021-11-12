@@ -20,7 +20,7 @@ PS \> myvars -path="C:\my_UiPath_project" -verbose
 
 ## How
 #### Easy
-- Download myvars executable from realeases
+- Download myvars executable from [releases](https://github.com/addUsername/UiPath-var-counter/releases/)
 #### test this xd
 - [Install go](https://golang.org/doc/install) (if needed)
 - `git clone https://github.com/addUsername/UiPath-var-counter`
