@@ -1,10 +1,7 @@
 # UiPath-var-counter
-
-
-Simple cli program that identify variables from an UiPath project
+Simple cli program that identify variables from UiPath project reading its `.xaml` files
 
 ## What
-Simple cli program that identify variables from an UiPath project
 
 ``` 
 PS \> myvars -path="C:\my_UiPath_project" -verbose
