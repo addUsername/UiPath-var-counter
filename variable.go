@@ -1,5 +1,6 @@
 package main
 
+// Represents a var
 type Variable struct {
 	Class   string `xml:"TypeArguments,attr"`
 	Name    string `xml:"Name,attr"`

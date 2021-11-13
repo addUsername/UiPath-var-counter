@@ -5,6 +5,7 @@ import (
 	"os"
 )
 
+// Check for errors and returns all valid file paths (.xaml)
 func getAllPaths(dir string, s bool) ([]string, error) {
 
 	var toReturn []string
@@ -24,6 +25,7 @@ func getAllPaths(dir string, s bool) ([]string, error) {
 
 }
 
+// Adds dot "." functionality
 func processPath(dir string) string {
 
 	if dir == "." {
@@ -34,12 +36,13 @@ func processPath(dir string) string {
 			Perror(err)
 			os.Exit(-2)
 		}
-		return root //+ "\\Main.xalm"
+		return root
 	}
 	return dir
 
 }
 
+// Recursive function, do the actual search
 func lookForXalms(toReturn []string, dir string) ([]string, error) {
 
 	files, err := os.ReadDir(dir)
@@ -73,6 +76,7 @@ func lookForXalms(toReturn []string, dir string) ([]string, error) {
 
 }
 
+// Cheks if arguments is a folder
 func isFolder(path string) bool {
 
 	fileInfo, _ := os.Stat(path)

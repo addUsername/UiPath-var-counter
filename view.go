@@ -7,22 +7,6 @@ import (
 	"github.com/gookit/color"
 )
 
-func text() {
-
-	// quick use package func
-	color.Redp("Simple to use color")
-	color.Redln("Simple to use color")
-
-	color.Cyanln("Simple to use color")
-	color.Yellowln("Simple to use color")
-
-	color.Println("<fg=11aa23>he</><bg=120,35,156>llo</>, <fg=167;bg=232>wel</><fg=red>come</>")
-
-	// tips message
-	color.Info.Tips("tips style message")
-	color.Warn.Tips("tips style message")
-}
-
 func Pinfo(info string) {
 	//color.Info.Tips(info)
 	if v {
@@ -50,7 +34,7 @@ func Pwarn(x string) {
 }
 
 func Ptitle(i string, total string, filename string) {
-	// añadir barras horizontales
+
 	myStyle := color.New(color.FgDarkGray, color.BgLightGreen, color.OpBold)
 
 	myStyle.Printf(" [%s - %s]    %s ", i, total, filename)
@@ -59,9 +43,9 @@ func Ptitle(i string, total string, filename string) {
 }
 func Prow(name string, object string, count string, odd bool) {
 
-	//https://stackoverflow.com/questions/25637440/golang-how-to-pad-a-number-with-zeros-when-printing
 	name, object, count = padColumns(name, object, count)
-
+	fmt.Printf("%s │ %s │ %s", name, object, count)
+	fmt.Println()
 	/*
 		if odd {
 			myStyle := color.New(color.FgDarkGray, color.BgBlack, color.OpBold)
@@ -76,19 +60,18 @@ func Prow(name string, object string, count string, odd bool) {
 		//	myStyle := color.New(color.FgGreen, color.BgBlack, color.OpBold)
 		//myStyle.Println(x)
 	*/
-	fmt.Printf("%s │ %s │ %s", name, object, count)
-	fmt.Println()
+
 }
 func Pfooter() {
 	fmt.Println("└" + strings.Repeat("─", 27) + "┴" + strings.Repeat("─", 29) + "┴" + strings.Repeat("─", 6) + "┘")
 }
 func PfooterScope(scope string) {
 	myStyle := color.New(color.FgDarkGray, color.BgDefault, color.OpBold)
-	//	myStyle.Printf("%6d", "%6d", "%6d", y[0], y[1], y[2])
 	myStyle.Printf(strings.Repeat("─", 66) + scope)
 	fmt.Println()
 }
 
+//lel, i know..
 func padColumns(name, object, count string) (string, string, string) {
 
 	// name: max 20ch
@@ -115,5 +98,4 @@ func padColumns(name, object, count string) (string, string, string) {
 	}
 
 	return name, object, count
-
 }

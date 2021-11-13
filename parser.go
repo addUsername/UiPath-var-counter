@@ -2,11 +2,13 @@ package main
 
 import (
 	"encoding/xml"
-	"fmt"
 	"io/ioutil"
 	"strings"
 )
 
+// TODO: get args definition too
+
+// Search for all vars definition and parse them
 func parseFile(path string) Xalm {
 
 	XAMLContent, err := ioutil.ReadFile(path)
@@ -34,6 +36,7 @@ func parseFile(path string) Xalm {
 
 }
 
+// Get rid of not necesary text
 func clean(text string) string {
 
 	flag := "</TextExpression.ReferencesForImplementation>"
@@ -41,6 +44,7 @@ func clean(text string) string {
 	return text[loc+len(flag):]
 }
 
+// Find variabes definitions and buid a valid .xml with all the info
 func getVariablesAstext(text string) []string {
 
 	flag := ".Variables>"
@@ -52,7 +56,6 @@ func getVariablesAstext(text string) []string {
 
 		loc1 := strings.Index(text, flag)
 		displayName := getDisplayname(text, loc1)
-		fmt.Println(displayName)
 		text = strings.Replace(text, flag, "####", 1)
 
 		loc2 := strings.Index(text, flag)
@@ -66,6 +69,7 @@ func getVariablesAstext(text string) []string {
 	return toReturn
 }
 
+//Get scope's name
 func getDisplayname(text string, loc1 int) string {
 
 	if loc1-200 < 0 {
@@ -91,5 +95,3 @@ func getDisplayname(text string, loc1 int) string {
 	return text
 
 }
-
-//DisplayName="Check Stop Signal" sap:VirtualizedContainerService.HintSize="859,22" sap2010:WorkflowViewState.IdRef="ShouldStop_2"
