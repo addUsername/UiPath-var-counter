@@ -8,6 +8,7 @@
 # Test binary, built with `go test -c`
 *.test
 *.xaml
+assets/
 test_input/
 test_output/
 
