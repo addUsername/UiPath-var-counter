@@ -80,7 +80,7 @@ func main() {
 				//	fmt.Printf("%-6s | % 6s | %6s", va.Name, va.Class, strconv.Itoa(va.Count))
 				//	fmt.Println()
 			}
-
+			PfooterScope(scope.Name)
 		}
 		Pfooter()
 	}

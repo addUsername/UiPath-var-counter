@@ -82,6 +82,12 @@ func Prow(name string, object string, count string, odd bool) {
 func Pfooter() {
 	fmt.Println("└" + strings.Repeat("─", 27) + "┴" + strings.Repeat("─", 29) + "┴" + strings.Repeat("─", 6) + "┘")
 }
+func PfooterScope(scope string) {
+	myStyle := color.New(color.FgDarkGray, color.BgDefault, color.OpBold)
+	//	myStyle.Printf("%6d", "%6d", "%6d", y[0], y[1], y[2])
+	myStyle.Printf(strings.Repeat("─", 66) + scope)
+	fmt.Println()
+}
 
 func padColumns(name, object, count string) (string, string, string) {
 
