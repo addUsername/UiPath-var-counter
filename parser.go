@@ -9,7 +9,7 @@ import (
 // TODO: get args definition too
 
 // Search for all vars definition and parse them
-func parseFile(path string) Xalm {
+func ParseFile(path string) Xalm {
 
 	XAMLContent, err := ioutil.ReadFile(path)
 
@@ -18,10 +18,16 @@ func parseFile(path string) Xalm {
 	}
 
 	strContent := string(XAMLContent)
+	var aux = ""
+	if members {
+		aux = getMembers(strContent)
+
+	}
+
 	strContent = clean(strContent)
 	yeah := getVariablesAstext(strContent)
 
-	final := "<root>\n" + strings.Join(yeah, "\n") + "</root>\n"
+	final := "<root>" + "\n" + aux + "\n" + strings.Join(yeah, "\n") + "</root>"
 
 	var coverFile Xalm
 
@@ -36,12 +42,20 @@ func parseFile(path string) Xalm {
 
 }
 
-// Get rid of not necesary text
-func clean(text string) string {
+// Find args
+func getMembers(text string) string {
 
-	flag := "</TextExpression.ReferencesForImplementation>"
-	loc := strings.Index(text, flag)
-	return text[loc+len(flag):]
+	flag := "<x:Members>"
+	flagEnd := "</x:Members>"
+	count := strings.Count(text, flag)
+	if count < 1 {
+		return ""
+	}
+	loc1 := strings.Index(text, flag)
+	loc2 := strings.Index(text, flagEnd)
+
+	return text[loc1 : loc2+len(flagEnd)]
+
 }
 
 // Find variabes definitions and buid a valid .xml with all the info
@@ -69,14 +83,23 @@ func getVariablesAstext(text string) []string {
 	return toReturn
 }
 
+// Get rid of not necesary text
+func clean(text string) string {
+
+	flag := "</TextExpression.ReferencesForImplementation>"
+	loc := strings.Index(text, flag)
+	return text[loc+len(flag):]
+}
+
 //Get scope's name
 func getDisplayname(text string, loc1 int) string {
 
-	if loc1-200 < 0 {
-		loc1 = 200
-	}
-	text = text[loc1-200 : loc1]
+	if loc1 < 200 {
 
+		text = text[0:]
+	} else {
+		text = text[loc1-200 : loc1]
+	}
 	s := strings.Split(text, "DisplayName=\"")
 	if len(s) > 1 {
 

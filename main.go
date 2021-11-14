@@ -23,7 +23,7 @@ TODO:
 - 0.8.0-pre
 */
 
-var ver = "0.2.5-alpha"
+var ver = "0.3.1-alpha"
 
 // path to uipath project
 var path string
@@ -34,12 +34,15 @@ var s bool
 // verbose
 var v bool
 
-// parse args
-func init() {
+// parse and show arguments at the end of each table
+var members bool
+
+func parseArgs() {
 
 	flag.StringVar(&path, "path", ".", "Path to step folder")
 	flag.BoolVar(&s, "s", false, "Single file, no recursive search")
 	flag.BoolVar(&v, "verbose", false, "Print log lines")
+	flag.BoolVar(&members, "args", false, "parse and show arguments too")
 
 	var help bool
 	flag.BoolVar(&help, "help", false, "Show help")
@@ -178,6 +181,7 @@ func savePath(install string) string {
 
 func main() {
 
+	parseArgs()
 	Pwarn("Reading files..")
 	files, err := getAllPaths(path, s)
 
@@ -191,7 +195,7 @@ func main() {
 
 	for _, file := range files {
 
-		vars := parseFile(file)
+		vars := ParseFile(file)
 		vars = countVars(vars, file)
 		allVars = append(allVars, vars)
 	}
@@ -216,6 +220,16 @@ func main() {
 		}
 		//└───────────────────────────┴─────────────────────────────┴──────┘
 		Pfooter()
+		// Print args
+
+		if members && len(va.Arguments.Arguments) > 1 {
+
+			Ptitle(strconv.Itoa(i+1), strconv.Itoa(len(allVars)), va.Filename)
+			for k, me := range va.Arguments.Arguments {
+				Prow(me.Name, me.Class, strconv.Itoa(me.Count), k%2 == 0)
+			}
+			Pfooter()
+		}
 	}
 	os.Exit(0)
 }
