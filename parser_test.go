@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/xml"
-	"fmt"
 	"io/ioutil"
 	"strings"
 	"testing"
@@ -21,7 +20,6 @@ func TestGetVariablesAsText(t *testing.T) {
 
 	text := getVariablesAstext(asset1)
 	final := "<root>" + "\n" + strings.Join(text, "\n") + "</root>"
-	fmt.Println(final)
 
 	var test Xalm
 	err = xml.Unmarshal([]byte(final), &test)

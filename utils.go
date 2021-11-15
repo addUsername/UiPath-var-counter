@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"os"
 )
@@ -81,4 +82,38 @@ func isFolder(path string) bool {
 
 	fileInfo, _ := os.Stat(path)
 	return fileInfo.IsDir()
+}
+
+func xamlToJson(allVars []Xalm) string {
+
+	b, err := json.Marshal(allVars)
+	if err != nil {
+		Perror(err)
+		return ""
+	}
+	return string(b)
+}
+
+// Saves string file, default name = output.json
+func stringToFile(text string, output string) error {
+
+	path = processPath(path)
+	if output[len(output)-4:] != "json" {
+		output = output + "\\output.json"
+	}
+	f, err := os.Create(output)
+
+	if err != nil {
+		return err
+	}
+
+	defer f.Close()
+
+	_, err2 := f.WriteString(text)
+
+	if err2 != nil {
+		return err
+	}
+
+	return nil
 }

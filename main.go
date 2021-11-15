@@ -2,19 +2,15 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
 	"strconv"
 )
 
 /*
 TODO:
-- parse arguments too
-- put colors on that table
 - export .csv
 - install (add to path)
-- 0.7.0-beta
-- test
-- 0.8.0-pre
 */
 
 var ver = "0.3.1-alpha"
@@ -34,6 +30,9 @@ var d bool
 // parse and show arguments at the end of each table
 var members bool
 
+// path to output.json
+var toJson string
+
 func parseArgs() {
 
 	flag.StringVar(&path, "path", ".", "Path to step folder")
@@ -52,11 +51,12 @@ func parseArgs() {
 	var install string
 	flag.StringVar(&install, "install", "", "(No fully implemented) Copy binary to specified folder and add to %PATH%")
 
-	flag.Parse()
+	flag.StringVar(&toJson, "json", "", "Path to export output.json")
 
-	if v {
-		d = true
-	}
+	var noColors bool
+	flag.BoolVar(&noColors, "coloroff", false, "Turn off colors")
+
+	flag.Parse()
 
 	if help {
 		flag.Usage()
@@ -80,6 +80,17 @@ func parseArgs() {
 		os.Exit(0)
 	}
 
+	if v {
+		d = true
+	}
+
+	if noColors {
+		primary = "ffffff"
+		second = "ffffff"
+		alternative = "ffffff"
+		ints = "ffffff"
+	}
+
 }
 
 func main() {
@@ -101,6 +112,21 @@ func main() {
 		vars := ParseFile(file)
 		vars = countVars(vars, file)
 		allVars = append(allVars, vars)
+	}
+
+	// if -json flag
+	if len(toJson) > 0 {
+		fmt.Println(toJson)
+		Pwarn("Generating json")
+		text := xamlToJson(allVars)
+		err = stringToFile(text, toJson)
+		if err != nil {
+			Perror(err)
+			os.Exit(-1)
+		} else {
+			Pwarn("File saved -> " + processPath(toJson))
+		}
+		os.Exit(0)
 	}
 
 	Pwarn("Rendering table..")

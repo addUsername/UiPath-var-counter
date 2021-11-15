@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/xml"
-	"fmt"
 	"io/ioutil"
 	"strings"
 )
@@ -65,9 +64,6 @@ func getVariablesAstext(text string) []string {
 	flag := ".Variables>"
 
 	count := strings.Count(text, flag) / 2
-
-	fmt.Println(count)
-
 	toReturn := make([]string, count)
 
 	for i := 0; i < count; i++ {
