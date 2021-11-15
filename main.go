@@ -125,17 +125,15 @@ func main() {
 		Pfooter()
 		// Print args
 
-		/*
-			if members && len(va.Arguments.Arguments) > 1 {
+		if members && len(va.Arguments.Arguments) > 0 {
 
-				Ptitle(strconv.Itoa(i+1), strconv.Itoa(len(allVars)), va.Filename)
-				for k, me := range va.Arguments.Arguments {
-					//Prow(me.Name, me.Class, strconv.Itoa(me.Count), k%2 == 0, d)
-					//Prow(va, k%2 == 0, d)
-				}
-				Pfooter()
+			//Ptitle(strconv.Itoa(i+1), strconv.Itoa(len(allVars)), va.Filename)
+			for k, me := range va.Arguments.Arguments {
+				ProwArguments(me, k%2 == 0)
+
 			}
-		*/
+			PfooterArguments()
+		}
 	}
 	os.Exit(0)
 }

@@ -8,6 +8,11 @@ import (
 	"github.com/gookit/color"
 )
 
+var primary = "9655a3"
+var second = "19cff7"
+var alternative = "fcba03"
+var ints = "98f059"
+
 func Pinfo(info string) {
 	//color.Info.Tips(info)
 	if v {
@@ -36,25 +41,32 @@ func Pwarn(x string) {
 
 func Ptitle(i string, total string, filename string) {
 
-	myStyle := color.New(color.FgDarkGray, color.BgLightGreen, color.OpBold)
-
 	if d {
-		myStyle.Printf(" [%s - %s]    %s "+strings.Repeat(" ", 46-len(filename))+"# Uses    # Default", i, total, filename)
+		color.Printf("<fg="+ints+">  [%s - %s] </> <fg="+second+">%s "+strings.Repeat(" ", 46-len(filename))+" # Uses  # Default </>", i, total, filename)
 	} else {
-		myStyle.Printf(" [%s - %s]    %s "+strings.Repeat(" ", 46-len(filename))+"# Uses   # Scope", i, total, filename)
+		color.Printf("<fg="+ints+">  [%s - %s] </> <fg="+second+">%s "+strings.Repeat(" ", 46-len(filename))+" # Uses  # Scope </>", i, total, filename)
 	}
 
-	myStyle.Println()
+	color.Println()
 
 	fmt.Println("┌" + strings.Repeat("─", 27) + "┬" + strings.Repeat("─", 29) + "┬" + strings.Repeat("─", 6) + "┐")
 }
+
+func ProwArguments(me Member, b bool) {
+
+	name, object, count := padColumns(me.Name, me.Class, strconv.Itoa(me.Count))
+	color.Printf("<fg="+alternative+">%s │ %s │ %s </>", name, object, count)
+	fmt.Println()
+
+}
+
 func Prow(v Variable, odd bool) {
 
 	name, object, count := padColumns(v.Name, v.Class, strconv.Itoa(v.Count))
 	if d {
-		fmt.Printf("%s │ %s │ %s %s", name, object, count, v.Default)
+		color.Printf("<fg="+primary+">%s</> │ "+"<fg="+primary+">%s</> │"+"<fg="+ints+"> %s</> %s", name, object, count, v.Default)
 	} else {
-		fmt.Printf("%s │ %s │ %s ", name, object, count)
+		color.Printf("<fg="+primary+">%s</> │ "+"<fg="+primary+">%s</> │"+"<fg="+ints+"> %s</> ", name, object, count)
 	}
 	fmt.Println()
 	/*
@@ -76,6 +88,9 @@ func Prow(v Variable, odd bool) {
 func Pfooter() {
 	fmt.Println("└" + strings.Repeat("─", 27) + "┴" + strings.Repeat("─", 29) + "┴" + strings.Repeat("─", 6) + "┘")
 }
+func PfooterArguments() {
+	color.Println("<fg=" + alternative + ">" + "└" + strings.Repeat("─", 27) + "┴" + strings.Repeat("─", 29) + "┴" + strings.Repeat("─", 6) + "┘</>")
+}
 func PfooterScope(scope string) {
 	myStyle := color.New(color.FgDarkGray, color.BgDefault, color.OpBold)
 	myStyle.Printf(strings.Repeat("─", 66) + scope)
@@ -94,13 +109,18 @@ func padColumns(name, object, count string) (string, string, string) {
 	if len(name) < 25 {
 		n = 25 - len(name)
 		name = "  " + name + strings.Repeat(" ", n)
+	} else {
+		name = name[:25] + "  "
 	}
 
 	object = strings.Join(strings.Split(object, ":")[1:], ":")
+	object = strings.Replace(object, "x:", "", -1)
 
 	if len(object) < 25 {
 		n = 25 - len(object)
 		object = "  " + object + strings.Repeat(" ", n)
+	} else {
+		object = object[0:25] + "  "
 	}
 
 	if len(count) < 4 {
