@@ -1,11 +1,8 @@
-FROM golang:1.9.7-alpine
+FROM golang:1.16.10-alpine3.13
 
 WORKDIR /app
 
 COPY . .
-
-#RUN go mod tidy
-RUN go get github.com/gookit/color
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
 #ENTRYPOINT ["/bin/sh", "-c" , "docker cp containerId:/sourceFilePath/someFile.txt C:/localMachineDestinationFolder"]

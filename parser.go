@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/xml"
+	"fmt"
 	"io/ioutil"
 	"strings"
 )
@@ -42,7 +43,7 @@ func ParseFile(path string) Xalm {
 
 }
 
-// Find args
+// Find arguments, they call them Members
 func getMembers(text string) string {
 
 	flag := "<x:Members>"
@@ -64,6 +65,9 @@ func getVariablesAstext(text string) []string {
 	flag := ".Variables>"
 
 	count := strings.Count(text, flag) / 2
+
+	fmt.Println(count)
+
 	toReturn := make([]string, count)
 
 	for i := 0; i < count; i++ {
@@ -76,8 +80,10 @@ func getVariablesAstext(text string) []string {
 
 		x := strings.Split(text[loc1+6:loc2], "\n")
 		x[len(x)-1] = "</variables>\n"
+
 		toReturn[i] = "<variables DisplayName=\"" + displayName + "\">\n" + strings.Join(x, "\n")
-		text = text[loc2+len(flag)+1:]
+
+		text = text[loc2+len(flag):]
 
 	}
 	return toReturn

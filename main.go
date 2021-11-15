@@ -34,6 +34,9 @@ var s bool
 // verbose
 var v bool
 
+// show default variables, it triggers auto when -verbose
+var d bool
+
 // parse and show arguments at the end of each table
 var members bool
 
@@ -43,7 +46,9 @@ func parseArgs() {
 	flag.BoolVar(&s, "s", false, "Single file, no recursive search")
 	flag.BoolVar(&v, "verbose", false, "Print log lines")
 	flag.BoolVar(&members, "args", false, "parse and show arguments too")
+	flag.BoolVar(&d, "default", false, "show default values too")
 
+	//os.Exit(0)
 	var help bool
 	flag.BoolVar(&help, "help", false, "Show help")
 
@@ -51,9 +56,13 @@ func parseArgs() {
 	flag.BoolVar(&version, "version", false, "Show version")
 
 	var install string
-	flag.StringVar(&install, "install", "", "Copy binary to specified folder and add to %PATH%")
+	flag.StringVar(&install, "install", "", "(No fully implemented) Copy binary to specified folder and add to %PATH%")
 
 	flag.Parse()
+
+	if v {
+		d = true
+	}
 
 	if help {
 		flag.Usage()
@@ -109,21 +118,22 @@ func doTheInstall(install string) error {
 	}
 	name := strings.Split(pathToExe, "\\")
 
-	path := savePath(install)
+	/*
+		path := savePath(install)
 
-	if len(path)+len(install)+20 > 1023 {
-		Pwarn("[WARNING] lenght path is bigger than 1024, add this route to the PATH manually: ")
-		Pinfo(install + "\\" + name[len(name)-1])
-	}
+		if len(path)+len(install)+20 > 1023 {
+			Pwarn("[WARNING] lenght path is bigger than 1024, add this route to the PATH manually: ")
+			Pinfo(install + "\\" + name[len(name)-1])
+		}
 
-	out, err := addToPath(path, install)
-	if err != nil {
-		Perror(err)
-		return err
-	}
-	Pinfo(out)
-	os.Exit(0)
-
+		out, err := addToPath(path, install)
+		if err != nil {
+			Perror(err)
+			return err
+		}
+		Pinfo(out)
+		os.Exit(0)
+	*/
 	Pinfo("Reading file: " + path)
 
 	input, err := ioutil.ReadFile(path)
@@ -138,11 +148,11 @@ func doTheInstall(install string) error {
 		Perror(err)
 		return err
 	}
-	Pinfo("Add " + name[len(name)-1] + " to %PATH% ")
-	panic("add to path it is not implemented yet")
 
+	Pinfo("Pls maually Add \"" + install + "\\" + name[len(name)-1] + "\" to %PATH% ")
+	Pinfo("Now you can use the command \"myvars\" anywhere in your Powershell")
+	panic("add to path it is not implemented yet, srry")
 	return nil
-
 }
 
 func addToPath(path string, install string) (string, error) {
@@ -213,7 +223,7 @@ func main() {
 
 			for k, va := range scope.Vars {
 				//  TransactionItem           │   QueueItem                 │   2
-				Prow(va.Name, va.Class, strconv.Itoa(va.Count), k%2 == 0)
+				Prow(va, k%2 == 0)
 			}
 			//──────────────────────────────────────────────────────────────────ProcessTestCase
 			PfooterScope(scope.Name)
@@ -222,14 +232,17 @@ func main() {
 		Pfooter()
 		// Print args
 
-		if members && len(va.Arguments.Arguments) > 1 {
+		/*
+			if members && len(va.Arguments.Arguments) > 1 {
 
-			Ptitle(strconv.Itoa(i+1), strconv.Itoa(len(allVars)), va.Filename)
-			for k, me := range va.Arguments.Arguments {
-				Prow(me.Name, me.Class, strconv.Itoa(me.Count), k%2 == 0)
+				Ptitle(strconv.Itoa(i+1), strconv.Itoa(len(allVars)), va.Filename)
+				for k, me := range va.Arguments.Arguments {
+					//Prow(me.Name, me.Class, strconv.Itoa(me.Count), k%2 == 0, d)
+					//Prow(va, k%2 == 0, d)
+				}
+				Pfooter()
 			}
-			Pfooter()
-		}
+		*/
 	}
 	os.Exit(0)
 }

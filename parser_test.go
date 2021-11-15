@@ -2,10 +2,35 @@ package main
 
 import (
 	"encoding/xml"
+	"fmt"
 	"io/ioutil"
+	"strings"
 	"testing"
 )
 
+func TestGetVariablesAsText(t *testing.T) {
+
+	file, err := ioutil.ReadFile("./test_input/test_displayName_Outter.txt")
+
+	if err != nil {
+		t.Fatalf("Eror getting file ")
+	}
+	asset1 := string(file)
+
+	value := "TestDefault"
+
+	text := getVariablesAstext(asset1)
+	final := "<root>" + "\n" + strings.Join(text, "\n") + "</root>"
+	fmt.Println(final)
+
+	var test Xalm
+	err = xml.Unmarshal([]byte(final), &test)
+
+	if value != test.Scopes[0].Vars[0].Default {
+		t.Fatalf(`getDisplayname(xaml,loc) returns %s but it shoud be %s`, test.Scopes[0].Vars[0].Default, value)
+	}
+
+}
 func TestGetDisplayOK(t *testing.T) {
 
 	file, err := ioutil.ReadFile("./test_input/test_displayName_Outter.txt")
@@ -53,17 +78,17 @@ func TestGetMembers(t *testing.T) {
 
 	text := getMembers(asset1)
 
-	var members Xalm
+	var members Members
 	err = xml.Unmarshal([]byte(text), &members)
 
 	if err != nil {
 		t.Fatalf(`Error xml.Unmarshall: \n%s `, err.Error())
 	}
-	if len(members.Members) != 2 {
+	if len(members.Arguments) != 2 {
 		t.Fatal(`It should be members here`)
 	}
 
-	if members.Members[0].Name != arg.Name || members.Members[0].Class != arg.Class {
-		t.Fatalf(` Name = %s but it shoud be %s AND %s should be %s`, members.Members[0].Name, arg.Name, members.Members[0].Class, arg.Class)
+	if members.Arguments[0].Name != arg.Name || members.Arguments[0].Class != arg.Class {
+		t.Fatalf(` Name = %s but it shoud be %s AND %s should be %s`, members.Arguments[0].Name, arg.Name, members.Arguments[0].Class, arg.Class)
 	}
 }

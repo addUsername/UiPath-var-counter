@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/gookit/color"
@@ -37,14 +38,24 @@ func Ptitle(i string, total string, filename string) {
 
 	myStyle := color.New(color.FgDarkGray, color.BgLightGreen, color.OpBold)
 
-	myStyle.Printf(" [%s - %s]    %s ", i, total, filename)
+	if d {
+		myStyle.Printf(" [%s - %s]    %s "+strings.Repeat(" ", 46-len(filename))+"# Uses    # Default", i, total, filename)
+	} else {
+		myStyle.Printf(" [%s - %s]    %s "+strings.Repeat(" ", 46-len(filename))+"# Uses   # Scope", i, total, filename)
+	}
+
 	myStyle.Println()
+
 	fmt.Println("┌" + strings.Repeat("─", 27) + "┬" + strings.Repeat("─", 29) + "┬" + strings.Repeat("─", 6) + "┐")
 }
-func Prow(name string, object string, count string, odd bool) {
+func Prow(v Variable, odd bool) {
 
-	name, object, count = padColumns(name, object, count)
-	fmt.Printf("%s │ %s │ %s", name, object, count)
+	name, object, count := padColumns(v.Name, v.Class, strconv.Itoa(v.Count))
+	if d {
+		fmt.Printf("%s │ %s │ %s %s", name, object, count, v.Default)
+	} else {
+		fmt.Printf("%s │ %s │ %s ", name, object, count)
+	}
 	fmt.Println()
 	/*
 		if odd {
