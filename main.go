@@ -2,18 +2,11 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
 	"strconv"
 )
 
-/*
-TODO:
-- export .csv
-- install (add to path)
-*/
-
-var ver = "0.3.1-alpha"
+var ver = "0.3.5"
 
 // path to uipath project
 var path string
@@ -41,7 +34,6 @@ func parseArgs() {
 	flag.BoolVar(&members, "args", false, "parse and show arguments too")
 	flag.BoolVar(&d, "default", false, "show default values too")
 
-	//os.Exit(0)
 	var help bool
 	flag.BoolVar(&help, "help", false, "Show help")
 
@@ -74,7 +66,7 @@ func parseArgs() {
 		err := installMe(install)
 		if err != nil {
 			Perror(err)
-			Pinfo("Please tun this command as administrator :P")
+			Pinfo("Please run this command as administrator :P")
 			os.Exit(-2)
 		}
 		os.Exit(0)
@@ -116,7 +108,7 @@ func main() {
 
 	// if -json flag
 	if len(toJson) > 0 {
-		fmt.Println(toJson)
+
 		Pwarn("Generating json")
 		text := xamlToJson(allVars)
 		err = stringToFile(text, toJson)

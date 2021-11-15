@@ -30,7 +30,6 @@ func getAllPaths(dir string, s bool) ([]string, error) {
 func processPath(dir string) string {
 
 	if dir == "." {
-
 		root, err := os.Getwd()
 
 		if err != nil {
@@ -39,6 +38,7 @@ func processPath(dir string) string {
 		}
 		return root
 	}
+
 	return dir
 
 }
@@ -55,7 +55,7 @@ func lookForXalms(toReturn []string, dir string) ([]string, error) {
 	var name string
 	for _, file := range files {
 
-		name = dir + "\\" + file.Name()
+		name = dir + string(os.PathSeparator) + file.Name()
 
 		if len(name) > 6 && name[len(name)-5:] == ".xaml" {
 
@@ -80,7 +80,11 @@ func lookForXalms(toReturn []string, dir string) ([]string, error) {
 // Cheks if arguments is a folder
 func isFolder(path string) bool {
 
-	fileInfo, _ := os.Stat(path)
+	fileInfo, err := os.Stat(path)
+	if err != nil {
+		Perror(err)
+		os.Exit(-1)
+	}
 	return fileInfo.IsDir()
 }
 
@@ -97,9 +101,9 @@ func xamlToJson(allVars []Xalm) string {
 // Saves string file, default name = output.json
 func stringToFile(text string, output string) error {
 
-	path = processPath(path)
+	output = processPath(output)
 	if output[len(output)-4:] != "json" {
-		output = output + "\\output.json"
+		output = output + string(os.PathSeparator) + "output.json"
 	}
 	f, err := os.Create(output)
 
