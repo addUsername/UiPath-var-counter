@@ -1,0 +1,11 @@
+llection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Outter" sap:VirtualizedContainerService.HintSize="376,427" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="variable1">
+        <Variable.Default>
+          <Literal x:TypeArguments="x:String">TestDefault</Literal>
+        </Variable.Default>
+      </Variable>
+      <Variable x:TypeArguments="x:String" Name="variable2" />
+    </Sequence.Variables>
